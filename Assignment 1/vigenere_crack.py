@@ -6,8 +6,6 @@ lower_bound = int(input())
 upper_bound = int(input())
 ciphertext = text = sys.stdin.read()
 
-alfabet = "abcdefghijklmnopqrstuvwxyz0"
-
 
 def match_character_to_index(character):
     if ord(character.lower()) - ord("a") > 25 or ord(character.lower()) - ord("a") < 0:
@@ -22,22 +20,24 @@ def square_vector(vector: list[int]):
 
 
 def std_vector(vector: list[int]):
-    # remove the last "miscelaneous" element from the alfabet list
-    vector.pop()
-
     return math.sqrt((sum(square_vector(vector)) / 26) - (sum(vector) / 26) ** 2)
 
 
 def vigenere_crack(ciphertext, lower_bound, upper_bound):
     highest_std, best_key_length = 0, 0
     for key_length in range(lower_bound, upper_bound + 1):
-        key_vectors = [[0] * 27] * key_length
-        pass
+        key_vectors = [[0] * 26 for _ in range(key_length)]
         key_index = 0
         # parse cipher text
         for character in ciphertext:
-            key_vectors[key_index][match_character_to_index(character)] += 1
-            key_index += 1
+            if (
+                ord(character.lower()) - ord("a") > 25
+                or ord(character.lower()) - ord("a") < 0
+            ):
+                pass
+            else:
+                key_vectors[key_index][ord(character.lower()) - ord("a")] += 1
+                key_index += 1
             if key_length == key_index:
                 key_index = 0
         stddevs = 0
